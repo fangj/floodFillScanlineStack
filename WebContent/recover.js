@@ -7,6 +7,12 @@ var downKey;
 var leftKey;
 var rightKey;
 var sprite;
+//三层
+var back_layer;
+var mid_layer;
+var front_layer;
+var cursors;
+var bmdContainer ;
 
 function preload() {
     game.load.image('secretImage', 'assets/pics/cougar_dragonsun.png');
@@ -16,9 +22,15 @@ function preload() {
 
 function create() {
 
+	//三层
+	 back_layer = game.add.group();
+	 mid_layer = game.add.group();
+	 front_layer = game.add.group();
+	
 	//添加底图
     bmd = game.make.bitmapData();
     bmd.load('secretImage');
+    //back_layer.add(bmd);
     
     //模糊底图
     blurSecretImage(bmd);
@@ -32,17 +44,15 @@ function create() {
    setTimeout(function(){
 	  	 var maxLength=Math.max(bmd.width,bmd.height);
 	     var scale=600/maxLength;
-  	bmd.addToWorld(300, 300, 0.5, 0.5,scale,scale);
+	     bmdContainer=bmd.addToWorld(300, 300, 0.5, 0.5,scale,scale);
+	     back_layer.add(bmdContainer);
    },500);
 
     //显示圆点
     showDot();
 
 	//注册按键
-	  upKey = game.input.keyboard.addKey(Phaser.Keyboard.UP);
-	    downKey = game.input.keyboard.addKey(Phaser.Keyboard.DOWN);
-	    leftKey = game.input.keyboard.addKey(Phaser.Keyboard.LEFT);
-	    rightKey = game.input.keyboard.addKey(Phaser.Keyboard.RIGHT);
+    cursors = game.input.keyboard.createCursorKeys();
 }
 
 function blurSecretImage(bmd) {
@@ -51,7 +61,6 @@ function blurSecretImage(bmd) {
 		   // this.exposure(100);
 		    this.saturation(-80);
 		 	this.stackBlur(15);
-		    
 		    this.exposure(-20);
 		    this.posterize(5);
 		    this.render();
@@ -63,27 +72,30 @@ function showDot(){
 	 sprite = game.add.graphics(0, 0);
 	 sprite.beginFill(0xFF0000, 1);
 	 sprite.drawCircle(0, 0, 10);
+	 front_layer.add(sprite);
+	 game.world.bringToTop(front_layer);
 }
 
 
 function update() {
 
-    if (upKey.isDown)
-    {
-        sprite.y--;
-    }
-    else if (downKey.isDown)
-    {
-        sprite.y++;
-    }
+	  if (cursors.left.isDown)
+	    {
+	        sprite.x -= 2;
+	    }
+	    else if (cursors.right.isDown)
+	    {
+	        sprite.x += 2;
+	    }
 
-    if (leftKey.isDown)
-    {
-        sprite.x--;
-    }
-    else if (rightKey.isDown)
-    {
-        sprite.x++;
-    }
+	    if (cursors.up.isDown)
+	    {
+	        sprite.y -= 2;
+	    }
+	    else if (cursors.down.isDown)
+	    {
+	        sprite.y += 2;
+	    }
+
 
 }
