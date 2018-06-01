@@ -125,10 +125,13 @@ function floodfill(bmd,x,y,borderColor,fillColor){
 		return bmd.getPixel(x,y);
 	}
 
-	function _setPixel(x,y,color){
+	function _setPixel(x,y,color,immediate){
+		if(immediate===undefined){
+			immediate=false
+		}
 		var colorString=Phaser.Color.RGBtoString(color.r,color.g,color.b);
 		//bmd.rect(x,y,1,1,colorString);
-		area.setPixel(Math.floor(x),Math.floor(y),color.r,color.g,color.b);
+		area.setPixel(Math.floor(x),Math.floor(y),color.r,color.g,color.b,immediate);
 	}
 
 	//return boolean
@@ -142,7 +145,7 @@ function floodfill(bmd,x,y,borderColor,fillColor){
 }
 
 function _floodfill(x,y,borderColor,fillColor,getPixel,setPixel,isColorSame,MAX_X,MAX_Y){
-	var deadCounter=100;
+	var deadCounter=10000;
 	function couldFill(x,y){
 		var color=getPixel(x,y);
 //		debugger
@@ -161,6 +164,7 @@ function _floodfill(x,y,borderColor,fillColor,getPixel,setPixel,isColorSame,MAX_
 		if(y<MAX_Y&&couldFill(x,y+1))__floodfill(x,y+1);
 	}
 	__floodfill(x,y);
+	setPixel(x,y,fillColor,true);//刷新显示
 }
 
 
