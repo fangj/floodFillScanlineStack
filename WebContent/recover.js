@@ -53,6 +53,13 @@ function create() {
 
 	//注册按键
     cursors = game.input.keyboard.createCursorKeys();
+    
+
+    game.input.onDown.add(onClick, this);
+}
+
+function onClick(point){
+	console.log("onClick",point.x,point.y);
 }
 
 function blurSecretImage(bmd) {
