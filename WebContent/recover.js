@@ -16,6 +16,7 @@ var bmdContainer ;
 
 var area;
 var areaContainer;
+var bmd2 ;
 
 function preload() {
 //    game.load.image('secretImage', 'assets/pics/cougar_dragonsun.png');
@@ -39,13 +40,16 @@ function create() {
 
     //添加
     area = game.add.bitmapData(game.width, game.height);
+    area.smoothed = false;
     areaContainer=area.addToWorld();
     mid_layer.add(areaContainer);
     
     
+    //copy
+    area.copy('secretImage');
     
     //模糊底图
-    blurSecretImage(bmd);
+//    blurSecretImage(bmd);
     
     
     //显示底图
@@ -53,27 +57,36 @@ function create() {
 	  	  console.log("End:", job.name);
 	  	  bmd.dirty=true;});
    
-   setTimeout(function(){
-	  	 var maxLength=Math.max(bmd.width,bmd.height);
-	     var scale=600/maxLength;
-	     bmdContainer=bmd.addToWorld(300, 300, 0.5, 0.5,scale,scale);
-	     back_layer.add(bmdContainer);
-   },500);
+//   setTimeout(function(){
+//	   		var scale=1;
+//	  	 var maxLength=Math.max(bmd.width,bmd.height);
+//	     scale=600/maxLength;
+//	     bmdContainer=bmd.addToWorld(300, 300, 0.5, 0.5,scale,scale);
+//	     back_layer.add(bmdContainer);
+//   },500);
 
     //显示圆点
     showDot();
 
 	//注册按键
     cursors = game.input.keyboard.createCursorKeys();
-    
+    bmd2 = game.make.bitmapData(64, 64);
+    bmd2.circle(32, 32, 32, 'rgba(255,0,255,0.2)');
+
 
     game.input.onDown.add(onClick, this);
+    
+
 }
 
 function onClick(p){
 	console.log("onClick",p.x,p.y);
 
-	area.setPixel(p.x, p.y, 255,0,0,true);
+	//area.setPixel(p.x, p.y, 255,0,0,true);
+
+	//area.draw(bmd2, p.x - 16, p.y - 16);
+	area.rect(p.x,p.y,1,1,"#FF0000");
+	area.dirty=true;
 }
 
 function blurSecretImage(bmd) {
