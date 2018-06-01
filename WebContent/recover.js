@@ -82,12 +82,18 @@ function create() {
 function onClick(p){
 	console.log("onClick",p.x,p.y);
 
-	//area.setPixel(p.x, p.y, 255,0,0,true);
 
-	//area.draw(bmd2, p.x - 16, p.y - 16);
-	area.rect(p.x,p.y,1,1,"#FF0000");
+//	area.rect(p.x,p.y,1,1,"#FF0000");
+//	area.dirty=true;
+	floodfill(area,p.x,p.y,{r:0,g:0,b:0},{r:0,g:0,b:255});
+}
+
+function floodfill(bmd,x,y,borderColor,fillColor){
+	var colorString=Phaser.Color.RGBtoString(fillColor.r,fillColor.g,fillColor.b);
+	area.rect(x,y,10,10,colorString);
 	area.dirty=true;
 }
+
 
 function blurSecretImage(bmd) {
 	var c=bmd.canvas;
