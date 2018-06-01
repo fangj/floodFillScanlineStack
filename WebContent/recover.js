@@ -14,13 +14,19 @@ var front_layer;
 var cursors;
 var bmdContainer ;
 
+var area;
+var areaContainer;
+
 function preload() {
-    game.load.image('secretImage', 'assets/pics/cougar_dragonsun.png');
+//    game.load.image('secretImage', 'assets/pics/cougar_dragonsun.png');
+	game.load.image('secretImage', 'assets/pics/watermelon-duck-outline.png');
 }
 
 
 
 function create() {
+	
+	game.stage.backgroundColor="#fff";
 
 	//三层
 	 back_layer = game.add.group();
@@ -30,7 +36,13 @@ function create() {
 	//添加底图
     bmd = game.make.bitmapData();
     bmd.load('secretImage');
-    //back_layer.add(bmd);
+
+    //添加
+    area = game.add.bitmapData(game.width, game.height);
+    areaContainer=area.addToWorld();
+    mid_layer.add(areaContainer);
+    
+    
     
     //模糊底图
     blurSecretImage(bmd);
@@ -58,8 +70,10 @@ function create() {
     game.input.onDown.add(onClick, this);
 }
 
-function onClick(point){
-	console.log("onClick",point.x,point.y);
+function onClick(p){
+	console.log("onClick",p.x,p.y);
+
+	area.setPixel(p.x, p.y, 255,0,0,true);
 }
 
 function blurSecretImage(bmd) {
